@@ -1,0 +1,28 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><link rel="stylesheet" href="css/reveal.css"><link rel="stylesheet" href="css/theme/default.css"><link rel="stylesheet" href="lib/css/zenburn.css"><link rel="stylesheet" href="css/presentation.css"><title>Heißer Hipsterwebscheiß</title></head><body><div class="reveal"><div class="slides"><section><h1>Heißer Hipsterwebscheiß</h1> <h2>wie performant ist der eigentlich?</h2> <h3>Und wie mache ich meinen lahmen code schnell</h3></section><section><img src="img/netscape.png" class="no-border"><h3>classically interpreted javascript code is slow</h3><aside class="notes"><ul><li>javascript as a solution to programmatically manipulate DOM</li><li>hacked together in two weeks</li><li>some design flaws which really suck now</li></ul><p>interpreted lalala</p></aside></section><section><h2>Just-In-Time compilation</h2><img src="img/v8.png" style="width:250px" class="no-border"><p>infers data types and compiles parts of the code</p><aside class="notes"><ul><li>hidden classes</li><li>typed arrays</li></ul></aside></section><section><img src="img/js.png" style="width:300px" class="no-border"><h2>How to make your code faster?</h2><h1 class="fragment">Type Information</h1><aside class="notes"><ul><li>keep optimizations in mind</li><li>single-typed-arrays</li></ul></aside></section><section><section><img src="img/emscripten.png" class="no-border"><h3 style="color:#f85">C/C++</h3><div class="fragment"><small>to</small><h3 style="color:#58f">LLVM</h3></div><small>to</small><div class="fragment"><h3 style="color:#8f5">Emscripten</h3><small>to</small></div><h3 style="color:#f58">JavaScript</h3></section><section><img src="img/emscripten.png" class="no-border"><br><br><p>Faster than hand coded javascript</p><p>hints data types to JIT</p><p>many optimizations from C/C++ compilers</p><pre class="fragment"><code>var MEM8  = new Uint8Array(1024*1024);
+var MEM32 = new Uint32Array(MEM8.buffer); // alias MEM8's data
+ 
+function compiledMemoryAccess(x) {
+	MEM8[x] = MEM8[x+10]; // read from x+10, write to x
+		MEM32[(x+16)>>2] = 100;
+}</code></pre></section></section><section><h1>Great. </h1><h4>Now we</h4><h2>trick </h2><h4>the engine into infering types</h4></section><section><section><h1 style="text-transform:none">asm.js</h1><small>proposed standard for a javascript compiler target language</small><br><br><h3>subset of javascript</h3><h3>Enables Ahead-Of-Time compilation</h3></section><section><h1 style="text-transform:none">asm.js</h1><h2>random benchmark</h2><img src="img/macro4b.png" class="no-border"><p><small style="color:#aaa">by @kripken</small></p><aside class="notes"><ul><li>aot comparable to other VMs java/c#</li></ul></aside></section></section><section><h1>Benefits</h1><aside class="notes"><ul><li>browser engines need only little changes</li><li>everything is valid javascript</li><li>works on everywhere</li><li>write performance sensitive code in C/C++, everything else in regular JS/coffee</li></ul></aside></section><section><h1>THE FUTURE!</h1><aside class="notes"><ul><li>better languages than C/C++ for emscripten</li><li>TypedScript / CoffeeScript</li><li>Optional Typing to asm.js</li></ul></aside></section><section><h3>Great Stuff To read</h3><a href="http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/"><small>http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/</small></a><br><a href="http://kripken.github.com/mloc_emscripten_talk"><small>http://kripken.github.com/mloc_emscripten_talk</small></a><br><a href="http://www.2ality.com/2013/02/asm-js.html"><small>http://www.2ality.com/2013/02/asm-js.html</small></a><br><a href="http://asmjs.org"><small>http://asmjs.org</small></a></section></div></div></body></html><script src="lib/js/head.min.js"></script><script src="js/reveal.js"></script><script type="text/javascript">// Full list of configuration options available here:
+ // https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+ controls: true,
+ progress: true,
+ history: true,
+ center: true,
+ 
+ theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+ transition: Reveal.getQueryHash().transition || 'concave', // default/cube/page/concave/zoom/linear/none
+ 
+ // Optional libraries used to extend on reveal.js
+ dependencies: [
+  { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+  { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+  { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  // { src: 'reveal.js-2.1/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+ ]
+});</script>
